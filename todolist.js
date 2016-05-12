@@ -1,30 +1,36 @@
+// Example of task module interface
+var connect = require('./pool-server.js');
+
 var todoList = {
+  // Getting all tasks
   list: function (callback) {
-    // connection.query(query, function (err, rows) {
-    //   if (err) {
-    //     callback(err);
-    //   }
+    connect.getTasks(function(err, rows) {
+      if (err)
+        return console.error(err);
 
-    //   connection.release()
-    //   callback(null, rows);
-    // });
+      console.log('rows: ' , rows);
+    });
   },
 
-  add: function (callback) {
+  // Add task to collection
+  add: function (text, callback) {
     // TODO
   },
 
-  change: function (callback) {
+  // Change task description
+  change: function (id, newText, callback) {
     // TODO
   },
 
-  complete: function (callback) {
+  // Mark task as resolved
+  complete: function (id, callback) {
     // TODO
   },
 
-  delete: function (callback) {
+  // Delete task
+  delete: function (id, callback) {
     // TODO
   },
 }
 
-module.exports = todoList;
+todoList.list();
