@@ -12,31 +12,33 @@ var connection = mysql.createConnection({
 // Установка соединения
 connection.connect(function (err) {
   if (err)
-    return console.error(err);
+    throw err;
+});
+
+// Получение всех задач
+connection.query('select * from todos;', function (err, rows) {
+  if (err)
+    throw err;
+
+  console.log('rows is: ', rows);
 });
 
 // Добавление задачи и получение всех задач
-connection.query('insert into todos (text, completed) values ("pretty task", "true");', function (err, info) {
+connection.query('insert into todos (text, completed) values ("my big task", "false");', function (err, info) {
   if (err)
-    return console.error(err);
+    throw err;
 
   console.log('info is: ', info);
 
   // Запрос с получением задач
   connection.query('select * from todos;', function (err, rows) {
     if (err)
-      console.error(err);
+      throw err;
 
     console.log('rows is: ', rows);
+
+    connection.end();
   });
-});
-
-// Получение всех задач
-connection.query('select * from todos;', function (err, rows) {
-  if (err)
-    return console.error(err);
-
-  console.log('rows is: ', rows);
 });
 
 // Закрытие соединения после выполнения всех задач

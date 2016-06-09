@@ -6,7 +6,7 @@ var todoList = {
   list: function (callback) {
     connect.getTasks(function(err, rows) {
       if (err)
-        return console.error(err);
+        throw err;
 
       console.log('rows: ' , rows);
     });
@@ -34,3 +34,5 @@ var todoList = {
 }
 
 todoList.list();
+
+module.exports = todoList;

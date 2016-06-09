@@ -15,7 +15,7 @@ var connectionPool = mysql.createPool({
 // Получение соединения из пула
 connectionPool.getConnection(function (err, connection) {
   if (err)
-    return console.error(err);
+    throw err;
 
   // Обработка параметров через mysql.escape
   var query = _getEscapedQuery(todoId);
@@ -25,34 +25,34 @@ connectionPool.getConnection(function (err, connection) {
 
   // Выполнение запроса
   connection.query(query, function (err, rows) {
-    console.log('rows is: ', rows);
+    if (err)
+      throw err;
 
+    console.log('rows is: ', rows);
     connection.release();
   });
 
   // Использование массива для замены в запросе
   connection.query('select * from todos where id = ?;', [todoId], function (err, rows) {
     if (err)
-      return console.error(err);
+      throw err;
 
     console.log('rows is: ', rows);
-
     connection.release();
   });
 
   // Объект с данными для запроса
   var newData = {
-    text: 'new text',
+    text: 'my little task',
     completed: 'true',
   };
 
   // Использование объекта для множественной подстановки в запрос
   connection.query('update todos set ? where id = ?;', [newData, todoId], function (err, rows) {
     if (err)
-      console.error(err);
+      throw err;
 
     console.log('rows is: ', rows);
-
     connection.release()
   });
 });

@@ -12,12 +12,12 @@ var connectionPool = mysql.createPool({
 // Получение соединения из пула
 connectionPool.getConnection(function (err, connection) {
   if (err)
-    return console.error(err);
+    throw err;
 
   // Получение всех задач
   connection.query('select * from todos;', function (err, rows) {
     if (err)
-      return console.error(err);
+      throw err;
 
     console.log('rows is: ', rows);
 
@@ -30,11 +30,10 @@ connectionPool.getConnection(function (err, connection) {
 function getTasks(callback) {
   connectionPool.getConnection(function (err, connection) {
     if (err)
-      console.error(err);
+      throw err;
 
     connection.query('select * from todos;', callback);
-    connection.end(); // Используем метод end,
-                      // чтобы не залезать внутрь callback-функции
+    connection.release();
   });
 }
 
