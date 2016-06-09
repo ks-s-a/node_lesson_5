@@ -1,7 +1,7 @@
-// Single connection query to a database
+// Одиночное соединение с базой данных
 var mysql = require('mysql');
 
-// Configuration of connection
+// Настройка соединения
 var connection = mysql.createConnection({
   host: 'localhost',
   database: 'todo',
@@ -9,20 +9,20 @@ var connection = mysql.createConnection({
   pass: '',
 });
 
-// Estimate connection
+// Установка соединения
 connection.connect(function (err) {
   if (err)
     return console.error(err);
 });
 
-// Add task and get all task with new one
+// Добавление задачи и получение всех задач
 connection.query('insert into todos (text, completed) values ("pretty task", "true");', function (err, info) {
   if (err)
     return console.error(err);
 
   console.log('info is: ', info);
 
-  // New query with tasks getting
+  // Запрос с получением задач
   connection.query('select * from todos;', function (err, rows) {
     if (err)
       console.error(err);
@@ -31,7 +31,7 @@ connection.query('insert into todos (text, completed) values ("pretty task", "tr
   });
 });
 
-// Get all tasks
+// Получение всех задач
 connection.query('select * from todos;', function (err, rows) {
   if (err)
     return console.error(err);
@@ -39,5 +39,5 @@ connection.query('select * from todos;', function (err, rows) {
   console.log('rows is: ', rows);
 });
 
-// End connection when all queries will be resolved
+// Закрытие соединения после выполнения всех задач
 connection.end();

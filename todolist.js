@@ -1,8 +1,8 @@
-// Example of task module interface
+// Пример модуля для обработки задач
 var connect = require('./pool-server.js');
 
 var todoList = {
-  // Getting all tasks
+  // Получение всех задач
   list: function (callback) {
     connect.getTasks(function(err, rows) {
       if (err)
@@ -12,24 +12,24 @@ var todoList = {
     });
   },
 
-  // Add task to collection
+  // Добавить задачу
   add: function (text, callback) {
-    // TODO
+    // Сделать
   },
 
-  // Change task description
+  // Изменить описание задачи
   change: function (id, newText, callback) {
-    // TODO
+    // Сделать
   },
 
-  // Mark task as resolved
+  // Отметить задачу как сделанную
   complete: function (id, callback) {
-    // TODO
+    // Сделать
   },
 
-  // Delete task
+  // Удаление задачи
   delete: function (id, callback) {
-    // TODO
+    // Сделать
   },
 }
 

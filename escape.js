@@ -1,10 +1,10 @@
-// Security aspects of database usage
+// Аспекты безопасности
 var mysql = require('mysql');
 
-// Try to hack us
+// Попробуем сломать запрос
 var todoId = '7 OR 1 = 1';
 
-// Conection pool creating
+// Создание пула запросов
 var connectionPool = mysql.createPool({
   host: 'localhost',
   database: 'todo',
@@ -12,25 +12,25 @@ var connectionPool = mysql.createPool({
   pass: '',
 });
 
-// Get connection from pool
+// Получение соединения из пула
 connectionPool.getConnection(function (err, connection) {
   if (err)
     return console.error(err);
 
-  // Handling parameters via mysql.escape method
+  // Обработка параметров через mysql.escape
   var query = _getEscapedQuery(todoId);
 
-  // Handling query text via mysql.format method
+  // Обработка параметров через mysql.format
   var query = _getFormattedQuery(todoId);
 
-  // Query executing
+  // Выполнение запроса
   connection.query(query, function (err, rows) {
     console.log('rows is: ', rows);
 
     connection.release();
   });
 
-  // Use array of parameters for query replacing
+  // Использование массива для замены в запросе
   connection.query('select * from todos where id = ?;', [todoId], function (err, rows) {
     if (err)
       return console.error(err);
@@ -40,13 +40,13 @@ connectionPool.getConnection(function (err, connection) {
     connection.release();
   });
 
-  // Object of our query data
+  // Объект с данными для запроса
   var newData = {
     text: 'new text',
     completed: 'true',
   };
 
-  // Use objects for set multiple fields in query
+  // Использование объекта для множественной подстановки в запрос
   connection.query('update todos set ? where id = ?;', [newData, todoId], function (err, rows) {
     if (err)
       console.error(err);
@@ -57,14 +57,14 @@ connectionPool.getConnection(function (err, connection) {
   });
 });
 
-// Method with mysql.escape usage
+// Метод с mysql.escape
 function _getEscapedQuery(todoId) {
   var todoIdEscaped = mysql.escape(todoId);
   
   return 'select * from todos where id = '+ todoIdEscaped +';';
 }
 
-// Method with mysql.format usage
+// Метод с mysql.format
 function _getFormattedQuery(todoId) {
   var query = 'select * from ?? where ?? = ?;';
 

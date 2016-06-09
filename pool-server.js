@@ -1,7 +1,7 @@
-// Example of connection pool usage
+// Использование пула соединений
 var mysql = require('mysql');
 
-// Configurating connection pool
+// Настройка пула соединения
 var connectionPool = mysql.createPool({
   host: 'localhost',
   database: 'todo',
@@ -9,34 +9,34 @@ var connectionPool = mysql.createPool({
   pass: '',
 });
 
-// Get connection from pool
+// Получение соединения из пула
 connectionPool.getConnection(function (err, connection) {
   if (err)
     return console.error(err);
 
-  // Get all tasks with pool connection usage
+  // Получение всех задач
   connection.query('select * from todos;', function (err, rows) {
     if (err)
       return console.error(err);
 
     console.log('rows is: ', rows);
 
-    // Release connection and return it into the pool
+    // Отправка соединения обратно в пул
     connection.release();
   });
 });
 
-// External method for module using
+// Внешний метод для использования
 function getTasks(callback) {
   connectionPool.getConnection(function (err, connection) {
     if (err)
       console.error(err);
 
     connection.query('select * from todos;', callback);
-    connection.end(); // We use end method,
-                      // because we don't have access into callback function
+    connection.end(); // Используем метод end,
+                      // чтобы не залезать внутрь callback-функции
   });
 }
 
-// Export method for futher usage
+// Экспорт метода для использования
 module.exports.getTasks = getTasks;
