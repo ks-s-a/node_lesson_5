@@ -17,6 +17,15 @@ connectionPool.getConnection(function (err, connection) {
   if (err)
     throw err;
 
+  // Запрос без фильтрации входных параметров
+  connection.query('select * from todos where id = '+ todoId +';', function (err, rows) {
+    if (err)
+      throw err;
+
+    console.log('rows is: ', rows);
+    connection.release();
+  });
+
   // Обработка параметров через mysql.escape
   var query = _getEscapedQuery(todoId);
 
@@ -43,7 +52,7 @@ connectionPool.getConnection(function (err, connection) {
 
   // Объект с данными для запроса
   var newData = {
-    text: 'my little task',
+    text: 'my new task',
     completed: 'true',
   };
 
